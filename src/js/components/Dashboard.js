@@ -71,7 +71,7 @@ class Dashboard {
 
         // geometry = new THREE.PlaneGeometry(1000, 800, 10, 10)
     
-        // geometry = new THREE.SphereGeometry(500, 50, 50, 0, 2, 1, 1);
+        // geometry = new THREE.SphereGeometry(1500, 50, 50, 0, 2, 1, 1);
 
         material = new THREE.ShaderMaterial({
             uniforms: uniforms,
@@ -148,10 +148,10 @@ class Dashboard {
             this.updatingPerspective = false
         }
 
+        let date = new Date()
         let elapsedMilliseconds = Date.now() - this.c.startTime
         uniforms.u_time.value = elapsedMilliseconds / 100
 
-        // Update HUD graphics.
         this.hudBitmap.clearRect(0, 0, this.screenSize.x, this.screenSize.y)
 
         // this.hudBitmap.shadowColor = "#76A9E0"
@@ -169,48 +169,30 @@ class Dashboard {
         this.hudBitmap.fillStyle = "#76A9E0"
         this.hudBitmap.font = "600 20px industry"
         this.hudBitmap.textAlign = 'left'
-        this.hudBitmap.fillText('STUDIO GC - DASHBOARD', 30, 50)
+        this.hudBitmap.fillText('GC STUDIO - DASHBOARD', 30, 50)
         this.hudBitmap.textAlign = 'right'
-        this.hudBitmap.fillText(elapsedMilliseconds, this.screenSize.x - 50, this.screenSize.y - 50)
+        this.hudBitmap.fillText(`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}`, this.screenSize.x - 50, this.screenSize.y - 50)
 
         this.hudBitmap.strokeStyle = "#76A9E0";
-        this.roundRect(this.hudBitmap, 30, 80, 500, 800, 10, false, true)
+        this.roundRect(this.hudBitmap, 30, 80, 500, 80, 10, false, true)
         this.hudBitmap.strokeStyle = null;
 
         this.hudBitmap.font = "600 30px industry"
         this.hudBitmap.textAlign = 'left';
         this.hudBitmap.fillText('DRIBBBLE', 50, 130)
 
-        this.hudBitmap.font = "400 25px industry"
-        this.hudBitmap.fillText('STUDIO GC', 50, 190)
-
         this.hudBitmap.font = "400 20px industry"
-        this.hudBitmap.fillText('FOLLOWERS: ' + elapsedMilliseconds, 50, 230)
-
-        this.hudBitmap.font = "400 25px industry"
-        this.hudBitmap.fillText('NATHAN RILEY', 50, 290)
-
-        this.hudBitmap.font = "400 20px industry"
-        this.hudBitmap.fillText('FOLLOWERS: 65017', 50, 330)
+        this.hudBitmap.fillText('FOLLOWERS: ' + elapsedMilliseconds, 220, 126)
 
         this.hudBitmap.strokeStyle = "#76A9E0";
-        this.roundRect(this.hudBitmap, 560, 80, 500, 800, 10, false, true)
+        this.roundRect(this.hudBitmap, 30, 180, 500, 80, 10, false, true)
         this.hudBitmap.strokeStyle = null;
 
         this.hudBitmap.font = "600 30px industry"
-        this.hudBitmap.fillText('TWITTER', 580, 130)
-
-        this.hudBitmap.font = "400 25px industry"
-        this.hudBitmap.fillText('STUDIO GC', 580, 190)
+        this.hudBitmap.fillText('TWITTER', 50, 230)
 
         this.hudBitmap.font = "400 20px industry"
-        this.hudBitmap.fillText('FOLLOWERS: ' + elapsedMilliseconds, 580, 230)
-
-        this.hudBitmap.font = "400 25px industry"
-        this.hudBitmap.fillText('NATHAN RILEY', 580, 290)
-
-        this.hudBitmap.font = "400 20px industry"
-        this.hudBitmap.fillText('FOLLOWERS: 65017', 580, 330)
+        this.hudBitmap.fillText('FOLLOWERS: ' + elapsedMilliseconds, 220, 226)
 
         this.hudTexture.needsUpdate = true
 
