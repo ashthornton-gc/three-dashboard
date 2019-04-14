@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import OrbitControls from 'orbit-controls-es6'
 import { TweenMax } from 'gsap'
+import WEBVR from './WebVR'
 
 import vert from '../shaders/shader.vert'
 import frag from '../shaders/shader.frag'
@@ -97,10 +98,14 @@ class Dashboard {
         this.hudBitmap = this.hudCanvas.getContext('2d');
     
         document.body.appendChild(this.renderer.domElement)
+        
+        // document.body.appendChild( WEBVR.createButton( this.renderer ) )
 
+        // this.renderer.vr.enabled = true
         this.renderer.domElement.addEventListener( 'wheel', this.scroll, false )
         window.addEventListener( 'mousemove', this.mousemove, false )
 
+        // this.renderer.setAnimationLoop( this.animate )
         this.animate()
 
     }
@@ -177,19 +182,15 @@ class Dashboard {
         this.hudBitmap.fillText('DRIBBBLE', 50, 130)
 
         this.hudBitmap.font = "400 25px industry"
-        this.hudBitmap.textAlign = 'left';
         this.hudBitmap.fillText('STUDIO GC', 50, 190)
 
         this.hudBitmap.font = "400 20px industry"
-        this.hudBitmap.textAlign = 'left';
         this.hudBitmap.fillText('FOLLOWERS: ' + elapsedMilliseconds, 50, 230)
 
         this.hudBitmap.font = "400 25px industry"
-        this.hudBitmap.textAlign = 'left';
         this.hudBitmap.fillText('NATHAN RILEY', 50, 290)
 
         this.hudBitmap.font = "400 20px industry"
-        this.hudBitmap.textAlign = 'left';
         this.hudBitmap.fillText('FOLLOWERS: 65017', 50, 330)
 
         this.hudBitmap.strokeStyle = "#76A9E0";
@@ -197,23 +198,18 @@ class Dashboard {
         this.hudBitmap.strokeStyle = null;
 
         this.hudBitmap.font = "600 30px industry"
-        this.hudBitmap.textAlign = 'left';
         this.hudBitmap.fillText('TWITTER', 580, 130)
 
         this.hudBitmap.font = "400 25px industry"
-        this.hudBitmap.textAlign = 'left';
         this.hudBitmap.fillText('STUDIO GC', 580, 190)
 
         this.hudBitmap.font = "400 20px industry"
-        this.hudBitmap.textAlign = 'left';
         this.hudBitmap.fillText('FOLLOWERS: ' + elapsedMilliseconds, 580, 230)
 
         this.hudBitmap.font = "400 25px industry"
-        this.hudBitmap.textAlign = 'left';
         this.hudBitmap.fillText('NATHAN RILEY', 580, 290)
 
         this.hudBitmap.font = "400 20px industry"
-        this.hudBitmap.textAlign = 'left';
         this.hudBitmap.fillText('FOLLOWERS: 65017', 580, 330)
 
         this.hudTexture.needsUpdate = true
