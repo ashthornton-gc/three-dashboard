@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import OrbitControls from 'orbit-controls-es6'
 import { TweenMax } from 'gsap'
 import WEBVR from './WebVR'
+import paper from 'paper'
 
 import vert from '../shaders/shader.vert'
 import frag from '../shaders/shader.frag'
@@ -45,16 +46,19 @@ class Dashboard {
         this.renderer.setSize(this.c.size.w, this.c.size.h)
 
         scene = new THREE.Scene()
+        // scene.background = new THREE.Color('0xFFFFFF')
 
         let cameraPosition = 1500;
 
         const fov = 180 * ( 2 * Math.atan( this.c.size.h / 2 / cameraPosition ) ) / Math.PI
-        this.camera = new THREE.PerspectiveCamera( fov, this.c.size.w / this.c.size.h, 1, 3000 )
+        this.camera = new THREE.PerspectiveCamera( fov, this.c.size.w / this.c.size.h, 1, 5000 )
         this.camera.position.set( 0, 0, cameraPosition )
 
         controls = new OrbitControls( this.camera )
 
         this.hudCanvas = document.createElement('canvas')
+
+        paper.setup(this.hudCanvas)
 
         this.hudTexture = new THREE.Texture(this.hudCanvas)
         this.hudTexture.minFilter = THREE.LinearFilter
@@ -67,7 +71,7 @@ class Dashboard {
             u_texture: { type: 't', value: this.hudTexture }
         }
 
-        geometry = this.CylinderCurvedSurfaceGeometry( 1500, 1500, Math.PI*0.75, Math.PI*1.25, 100, 10)
+        geometry = this.CylinderCurvedSurfaceGeometry( 2000, 1500, Math.PI*0.75, Math.PI*1.25, 100, 10)
 
         // geometry = new THREE.PlaneGeometry(1000, 800, 10, 10)
     
@@ -99,14 +103,14 @@ class Dashboard {
     
         document.body.appendChild(this.renderer.domElement)
         
-        // document.body.appendChild( WEBVR.createButton( this.renderer ) )
+        document.body.appendChild( WEBVR.createButton( this.renderer ) )
 
-        // this.renderer.vr.enabled = true
+        this.renderer.vr.enabled = true
         this.renderer.domElement.addEventListener( 'wheel', this.scroll, false )
         window.addEventListener( 'mousemove', this.mousemove, false )
 
-        // this.renderer.setAnimationLoop( this.animate )
-        this.animate()
+        this.renderer.setAnimationLoop( this.animate )
+        // this.animate()
 
     }
 
@@ -141,12 +145,12 @@ class Dashboard {
 
     animate() {
 
-        this.animationId = requestAnimationFrame(this.animate.bind(this))
+        // this.animationId = requestAnimationFrame(this.animate.bind(this))
 
-        if( this.updatingPerspective ) {
-            this.updatePerspective()
-            this.updatingPerspective = false
-        }
+        // if( this.updatingPerspective ) {
+        //     this.updatePerspective()
+        //     this.updatingPerspective = false
+        // }
 
         let date = new Date()
         let elapsedMilliseconds = Date.now() - this.c.startTime
@@ -157,42 +161,53 @@ class Dashboard {
         // this.hudBitmap.shadowColor = "#76A9E0"
         // this.hudBitmap.shadowOffsetX = 0
         // this.hudBitmap.shadowOffsetY = 0
-        // this.hudBitmap.shadowBlur = 5
+        // this.hudBitmap.shadowBlur = 20
 
         this.hudBitmap.fillStyle = "black"
         this.hudBitmap.fillRect(0, 0, this.screenSize.x, this.screenSize.y)
 
-        this.hudBitmap.strokeStyle = "#76A9E0";
-        this.roundRect(this.hudBitmap, 5, 5, this.screenSize.x - 10, this.screenSize.y - 10, 10, false, true)
+        this.hudBitmap.strokeStyle = "#FFF";
+        this.roundRect(this.hudBitmap, 5, 5, this.screenSize.x - 10, this.screenSize.y - 10, 0, false, true)
         this.hudBitmap.strokeStyle = null;
 
-        this.hudBitmap.fillStyle = "#76A9E0"
-        this.hudBitmap.font = "600 20px industry"
+        this.hudBitmap.fillStyle = "#FFF"
+        this.hudBitmap.font = "600 50px industry"
         this.hudBitmap.textAlign = 'left'
-        this.hudBitmap.fillText('GC STUDIO - DASHBOARD', 30, 50)
+        this.hudBitmap.fillText('GC STUDIO | DASHBOARD', 30, 80)
+        this.hudBitmap.font = "600 20px industry"
         this.hudBitmap.textAlign = 'right'
         this.hudBitmap.fillText(`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${('0' + date.getMinutes()).slice(-2)}:${('0' + date.getSeconds()).slice(-2)}`, this.screenSize.x - 50, this.screenSize.y - 50)
 
-        this.hudBitmap.strokeStyle = "#76A9E0";
-        this.roundRect(this.hudBitmap, 30, 80, 500, 80, 10, false, true)
+        this.hudBitmap.strokeStyle = "#FFF";
+        this.roundRect(this.hudBitmap, 30, 120, 210, 150, 0, false, true)
         this.hudBitmap.strokeStyle = null;
 
         this.hudBitmap.font = "600 30px industry"
         this.hudBitmap.textAlign = 'left';
-        this.hudBitmap.fillText('DRIBBBLE', 50, 130)
+        this.hudBitmap.fillText('DRIBBBLE', 50, 170)
 
-        this.hudBitmap.font = "400 20px industry"
-        this.hudBitmap.fillText('FOLLOWERS: ' + elapsedMilliseconds, 220, 126)
+        this.hudBitmap.font = "400 40px industry"
+        this.hudBitmap.fillText(elapsedMilliseconds, 50, 232)
 
-        this.hudBitmap.strokeStyle = "#76A9E0";
-        this.roundRect(this.hudBitmap, 30, 180, 500, 80, 10, false, true)
+        this.hudBitmap.strokeStyle = "#FFF";
+        this.roundRect(this.hudBitmap, 260, 120, 210, 150, 0, false, true)
         this.hudBitmap.strokeStyle = null;
 
         this.hudBitmap.font = "600 30px industry"
-        this.hudBitmap.fillText('TWITTER', 50, 230)
+        this.hudBitmap.fillText('TWITTER', 280, 170)
 
-        this.hudBitmap.font = "400 20px industry"
-        this.hudBitmap.fillText('FOLLOWERS: ' + elapsedMilliseconds, 220, 226)
+        this.hudBitmap.font = "400 40px industry"
+        this.hudBitmap.fillText(elapsedMilliseconds, 280, 232)
+
+        this.hudBitmap.strokeStyle = "#FFF";
+        this.roundRect(this.hudBitmap, 490, 120, 210, 150, 0, false, true)
+        this.hudBitmap.strokeStyle = null;
+
+        this.hudBitmap.font = "600 30px industry"
+        this.hudBitmap.fillText('INSTAGRAM', 510, 170)
+
+        this.hudBitmap.font = "400 40px industry"
+        this.hudBitmap.fillText(elapsedMilliseconds, 510, 232)
 
         this.hudTexture.needsUpdate = true
 
