@@ -9,8 +9,8 @@ void main() {
 
     vec4 texture = texture2D(u_texture, uv);
 
-    // if( texture.a < 0.01 ) {
-    //     texture.rgba = vec4(0.5);
+    // if( texture.r < 0.1 && texture.g < 0.1 ) {
+    //     texture.rgba = vec4(1.0);
     // }
 	
 	gl_FragColor = texture;

@@ -39,16 +39,16 @@ class Dashboard {
 
     init() {
 
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false })
+        this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false })
         this.renderer.setPixelRatio( this.c.dpr )
         this.renderer.setSize(this.c.size.w, this.c.size.h)
 
         scene = new THREE.Scene()
 
-        let cameraPosition = 1000;
+        let cameraPosition = 1500;
 
         const fov = 180 * ( 2 * Math.atan( this.c.size.h / 2 / cameraPosition ) ) / Math.PI
-        this.camera = new THREE.PerspectiveCamera( fov, this.c.size.w / this.c.size.h, 1, 1500 )
+        this.camera = new THREE.PerspectiveCamera( fov, this.c.size.w / this.c.size.h, 1, 3000 )
         this.camera.position.set( 0, 0, cameraPosition )
 
         controls = new OrbitControls( this.camera )
@@ -66,7 +66,9 @@ class Dashboard {
             u_texture: { type: 't', value: this.hudTexture }
         }
 
-        geometry = this.CylinderCurvedSurfaceGeometry( 1000, 1000, Math.PI*0.75, Math.PI*1.25, 100, 10)
+        geometry = this.CylinderCurvedSurfaceGeometry( 1500, 1500, Math.PI*0.75, Math.PI*1.25, 100, 10)
+
+        // geometry = new THREE.PlaneGeometry(1000, 800, 10, 10)
     
         // geometry = new THREE.SphereGeometry(500, 50, 50, 0, 2, 1, 1);
 
@@ -93,8 +95,6 @@ class Dashboard {
 
         // Get 2D context and draw something supercool.
         this.hudBitmap = this.hudCanvas.getContext('2d');
-        this.hudBitmap.font = "Normal 20px Helvetica";
-        this.hudBitmap.textAlign = 'left';
     
         document.body.appendChild(this.renderer.domElement)
 
@@ -115,13 +115,22 @@ class Dashboard {
 
     updatePerspective() {
 
+        // let deltaX = ( this.mousePerspective.x - this.camera.rotation.x ) / 5
+        // let deltaY = ( this.mousePerspective.y - this.camera.rotation.y  ) / 5
+        // this.camera.rotation.x = -deltaY
+        // this.camera.rotation.y = -deltaX
+
         TweenMax.to( this.camera.rotation, 4, {
             x: -this.mousePerspective.y * 0.5,
             y: -this.mousePerspective.x * 0.5,
             ease: 'Power4.easeOut',
         })
 
-        this.updatingPerspective = false
+        // if( Math.abs( deltaX ) > 0.1 || Math.abs( deltaY ) > 0.1 ) {
+        //     this.updatingPerspective = true
+        // } else {
+        //     this.updatingPerspective = false
+        // }
 
     }
 
@@ -139,18 +148,74 @@ class Dashboard {
 
         // Update HUD graphics.
         this.hudBitmap.clearRect(0, 0, this.screenSize.x, this.screenSize.y)
+
+        // this.hudBitmap.shadowColor = "#76A9E0"
+        // this.hudBitmap.shadowOffsetX = 0
+        // this.hudBitmap.shadowOffsetY = 0
+        // this.hudBitmap.shadowBlur = 5
+
         this.hudBitmap.fillStyle = "black"
         this.hudBitmap.fillRect(0, 0, this.screenSize.x, this.screenSize.y)
-        this.hudBitmap.strokeStyle = "#8CF1F4";
-        this.roundRect(this.hudBitmap, 5, 5, this.screenSize.x - 5, this.screenSize.y - 5, 10, false, true)
+
+        this.hudBitmap.strokeStyle = "#76A9E0";
+        this.roundRect(this.hudBitmap, 5, 5, this.screenSize.x - 10, this.screenSize.y - 10, 10, false, true)
         this.hudBitmap.strokeStyle = null;
-        this.hudBitmap.fillStyle = "#8CF1F4"
-        this.hudBitmap.shadowColor = "#8CF1F4"
-        this.hudBitmap.shadowOffsetX = 0
-        this.hudBitmap.shadowOffsetY = 0
-        this.hudBitmap.shadowBlur = 10
-        this.hudBitmap.fillText(elapsedMilliseconds, 50, 50)
+
+        this.hudBitmap.fillStyle = "#76A9E0"
+        this.hudBitmap.font = "600 20px industry"
+        this.hudBitmap.textAlign = 'left'
+        this.hudBitmap.fillText('STUDIO GC - DASHBOARD', 30, 50)
+        this.hudBitmap.textAlign = 'right'
         this.hudBitmap.fillText(elapsedMilliseconds, this.screenSize.x - 50, this.screenSize.y - 50)
+
+        this.hudBitmap.strokeStyle = "#76A9E0";
+        this.roundRect(this.hudBitmap, 30, 80, 500, 800, 10, false, true)
+        this.hudBitmap.strokeStyle = null;
+
+        this.hudBitmap.font = "600 30px industry"
+        this.hudBitmap.textAlign = 'left';
+        this.hudBitmap.fillText('DRIBBBLE', 50, 130)
+
+        this.hudBitmap.font = "400 25px industry"
+        this.hudBitmap.textAlign = 'left';
+        this.hudBitmap.fillText('STUDIO GC', 50, 190)
+
+        this.hudBitmap.font = "400 20px industry"
+        this.hudBitmap.textAlign = 'left';
+        this.hudBitmap.fillText('FOLLOWERS: ' + elapsedMilliseconds, 50, 230)
+
+        this.hudBitmap.font = "400 25px industry"
+        this.hudBitmap.textAlign = 'left';
+        this.hudBitmap.fillText('NATHAN RILEY', 50, 290)
+
+        this.hudBitmap.font = "400 20px industry"
+        this.hudBitmap.textAlign = 'left';
+        this.hudBitmap.fillText('FOLLOWERS: 65017', 50, 330)
+
+        this.hudBitmap.strokeStyle = "#76A9E0";
+        this.roundRect(this.hudBitmap, 560, 80, 500, 800, 10, false, true)
+        this.hudBitmap.strokeStyle = null;
+
+        this.hudBitmap.font = "600 30px industry"
+        this.hudBitmap.textAlign = 'left';
+        this.hudBitmap.fillText('TWITTER', 580, 130)
+
+        this.hudBitmap.font = "400 25px industry"
+        this.hudBitmap.textAlign = 'left';
+        this.hudBitmap.fillText('STUDIO GC', 580, 190)
+
+        this.hudBitmap.font = "400 20px industry"
+        this.hudBitmap.textAlign = 'left';
+        this.hudBitmap.fillText('FOLLOWERS: ' + elapsedMilliseconds, 580, 230)
+
+        this.hudBitmap.font = "400 25px industry"
+        this.hudBitmap.textAlign = 'left';
+        this.hudBitmap.fillText('NATHAN RILEY', 580, 290)
+
+        this.hudBitmap.font = "400 20px industry"
+        this.hudBitmap.textAlign = 'left';
+        this.hudBitmap.fillText('FOLLOWERS: 65017', 580, 330)
+
         this.hudTexture.needsUpdate = true
 
         this.renderer.render(scene, this.camera)
