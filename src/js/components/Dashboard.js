@@ -85,7 +85,7 @@ class Dashboard {
         })
     
         mesh = new THREE.Mesh(geometry, material)
-        mesh.position.z = 750
+        mesh.position.z = 350
         mesh.scale.x = -1
 
         let box = new THREE.Box3().setFromObject( mesh )
@@ -103,14 +103,14 @@ class Dashboard {
     
         document.body.appendChild(this.renderer.domElement)
         
-        document.body.appendChild( WEBVR.createButton( this.renderer ) )
+        // document.body.appendChild( WEBVR.createButton( this.renderer ) )
 
-        this.renderer.vr.enabled = true
+        // this.renderer.vr.enabled = true
         this.renderer.domElement.addEventListener( 'wheel', this.scroll, false )
         window.addEventListener( 'mousemove', this.mousemove, false )
 
-        this.renderer.setAnimationLoop( this.animate )
-        // this.animate()
+        // this.renderer.setAnimationLoop( this.animate )
+        this.animate()
 
     }
 
@@ -145,12 +145,12 @@ class Dashboard {
 
     animate() {
 
-        // this.animationId = requestAnimationFrame(this.animate.bind(this))
+        this.animationId = requestAnimationFrame(this.animate.bind(this))
 
-        // if( this.updatingPerspective ) {
-        //     this.updatePerspective()
-        //     this.updatingPerspective = false
-        // }
+        if( this.updatingPerspective ) {
+            this.updatePerspective()
+            this.updatingPerspective = false
+        }
 
         let date = new Date()
         let elapsedMilliseconds = Date.now() - this.c.startTime
